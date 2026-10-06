@@ -1,4 +1,6 @@
 from django.db import models
+from Entreprise_App.models import Entreprise
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 
@@ -28,4 +30,11 @@ class Exception(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-   
+    entreprise = models.ForeignKey('Entreprise_App.Entreprise', on_delete=models.CASCADE, related_name='exceptions')
+
+    def clean(self):
+        supper().clean()
+        #Regle(s) metier
+        if self.entreprise_id and self.entreprise.Type_entrprise != 'chargeur':
+            raise ValidationError({'entreprise': "une expedition ne peut etre creee que par une entreprise de type chargeur"})  
+ 

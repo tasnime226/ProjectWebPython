@@ -1,5 +1,6 @@
 from django.db import models
 from Entreprise_App.models import Entreprise
+from django.core.validators import MinValueValidator
 
 # Create your models here.
 
@@ -20,7 +21,7 @@ class Vehicule(models.Model):
         ]
     )
 
-    capacite_kg = models.PositiveIntegerField()
+    capacite_kg = models.PositiveIntegerField(validators=[MinValueValidator(100),"capacité doit être supérieure à 100 kg"])
 
     disponible = models.BooleanField(default=True)
 

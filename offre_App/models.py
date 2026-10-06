@@ -1,7 +1,8 @@
 from django.db import models
 from Exception_App.models import Exception
 from Entreprise_App.models import Entreprise
-from vehicule_App.models import Vehicule
+from vehicule_App.models import Vehicule    
+from django.core.exceptions import ValidationError
 
 
 class Offre(models.Model):
@@ -45,4 +46,14 @@ class Offre(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_no   w=True)
+
+    def clean(self):
+        super().clean()
+        # Règle métier 
+        if self.transporteur and self.transporteur.Type_entrprise != 'transporteur':
+            raise ValidationError({'transporteur': "offre relative a un chargeur."})     
+        #Regle 2   
+        if self.vehicule_id and self.transporteur_id and self.vehicule.entreprise_id != self.transporteur_id:
+            raise ValidationError({'vehicule': "le vehicule doit appartenir au transporteur de offre."})
+
