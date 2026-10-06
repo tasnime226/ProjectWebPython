@@ -33,7 +33,7 @@ matricule_fiscale_validator = RegexValidator(
 
 class Entreprise(models.Model):
     raison_sociale = models.CharField(max_length=200,null=False,blank=False)
-    matricule_fiscale = models.CharField(max_length=17 ,unique=True, validators=[matricule_fiscale_validators])
+    matricule_fiscale = models.CharField(max_length=17 ,unique=True, validators=[matricule_fiscale_validator])
     Type_entrprise = models.CharField(max_length=100,choices=[('chargeur','Chargeur'),('transporteur','Transporteur')],default='chargeur')
     adresse = models.TextField(
     validators=[
@@ -44,4 +44,14 @@ class Entreprise(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     gerant =models.OneToOneField(utilisateur,on_delete=models.CASCADE,related_name='entreprise')
+
+
+def save(self, *args, **kwargs):
+
+    if not self.user_id:
+        self.user_id= self._generate_user_id()
+
+    self.full_clean()
+
+    super().save(*args, **kwargs)
 

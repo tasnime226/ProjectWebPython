@@ -3,6 +3,8 @@ from Exception_App.models import Exception
 from Entreprise_App.models import Entreprise
 from vehicule_App.models import Vehicule    
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+
 
 
 class Offre(models.Model):
@@ -16,10 +18,13 @@ class Offre(models.Model):
 
     prix = models.DecimalField(
         max_digits=10,
-        decimal_places=2
+        decimal_places=2,
+        validators=[MinValueValidator(0.01)]
     )
 
-    delai_jours = models.PositiveIntegerField()
+    delai_jours = models.PositiveIntegerField(
+        validators=[MinValueValidator(1)]
+    )
 
     statut = models.CharField(
         max_length=20,
@@ -46,7 +51,7 @@ class Offre(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    updated_at = models.DateTimeField(auto_no   w=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def clean(self):
         super().clean()

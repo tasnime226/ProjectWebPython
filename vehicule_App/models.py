@@ -21,7 +21,7 @@ class Vehicule(models.Model):
         ]
     )
 
-    capacite_kg = models.PositiveIntegerField(validators=[MinValueValidator(100),"capacité doit être supérieure à 100 kg"])
+    capacite_kg = models.PositiveIntegerField(validators=[MinValueValidator(100,"capacité doit être supérieure à 100 kg")])
 
     disponible = models.BooleanField(default=True)
 
