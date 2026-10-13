@@ -26,9 +26,10 @@ class utilisateur(AbstractUser):
 
 
 matricule_fiscale_validator = RegexValidator(
-    regex=r'^\d{7}[/ -]?[A-Za-z][/ -]?[ABDNPEabdnpe][/ -]?[ABDNPEabdnpe][/ -]?[MPCNEmpcne][/ -]?\d{3}$',
-    message="Format incorrect - ex. 1234567AAM000 ou 1234567-A-A-M-000"
+    regex=r'^\d{7}[A-Za-z][ABDNPEabdnpe][MPCNEmpcne]\d{3}$',
+    message="Format incorrect - ex. 1234567AAM000"
 )
+
 
 
 class Entreprise(models.Model):
@@ -45,6 +46,8 @@ class Entreprise(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     gerant =models.OneToOneField(utilisateur,on_delete=models.CASCADE,related_name='entreprise')
 
+    def __str__(self):
+        return self.raison_sociale
 
 def save(self, *args, **kwargs):
 

@@ -56,7 +56,7 @@ class Offre(models.Model):
     def clean(self):
         super().clean()
         # Règle métier 
-        if self.transporteur and self.transporteur.Type_entrprise != 'transporteur':
+        if self.transporteur_id and self.transporteur.Type_entrprise != 'transporteur':
             raise ValidationError({'transporteur': "offre relative a un chargeur."})     
         #Regle 2   
         if self.vehicule_id and self.transporteur_id and self.vehicule.entreprise_id != self.transporteur_id:
