@@ -30,7 +30,7 @@ class Vehicule(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     proprietaire = models.ForeignKey(
-        Entreprise,
-        on_delete=models.CASCADE,
-        related_name='vehicules'
-    )
+    Entreprise,
+    on_delete=models.CASCADE,
+    related_name='vehicules'
+)

@@ -59,7 +59,7 @@ class Offre(models.Model):
         if self.transporteur_id and self.transporteur.Type_entrprise != 'transporteur':
             raise ValidationError({'transporteur': "offre relative a un chargeur."})     
         #Regle 2   
-        if self.vehicule_id and self.transporteur_id and self.vehicule.entreprise_id != self.transporteur_id:
+        if self.vehicule_id and self.transporteur_id and self.vehicule.proprietaire_id != self.transporteur_id:
             raise ValidationError({'vehicule': "le vehicule doit appartenir au transporteur de offre."})
         # Règle 3 : l'expédition doit être publiée
         if self.expedition_id and self.expedition.statut != 'publiee':
@@ -89,9 +89,9 @@ class Offre(models.Model):
 
             capacites = {
                 'camionnette': 1500,
-                 'fourgon': 3500,
-                 'camion_porteur': 19000,
-                 'semi_remorque': 26000,
+                'fourgon': 3500,
+                'camion porteur': 19000,
+                'porteur': 26000,
             }
             if type_vehicule not in capacites or poids > capacites[type_vehicule]:
                 raise ValidationError({
@@ -100,10 +100,12 @@ class Offre(models.Model):
 
     def save(self, *args, **kwargs):
         self.full_clean()  
+        super().save(*args, **kwargs)
         if self.statut == 'acceptee':
-            # Mettre à jour le statut de l'expédition à "attribuee"
             self.expedition.statut = 'attribuee'
             self.expedition.save()
-            offre.objects.filter(expedition=self.expedition, statut='proposee').exclude(pk=self.pk).update(statut='refusee')
-            supper().save(*args, **kwargs)
+            Offre.objects.filter(
+                expedition=self.expedition,
+                statut='proposee'
+            ).exclude(pk=self.pk).update(statut='retiree')
 
