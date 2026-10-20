@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 
 # Create your models here.
@@ -17,12 +18,35 @@ def validate_email(value):
 
 
 class utilisateur(AbstractUser):
-    user_id =models.CharField(max_length=8,primary_key=True)
+    user_id =models.CharField(max_length=12,primary_key=True)
     email = models.EmailField(unique=True, validators=[validate_email])
     role = models.CharField(max_length=20,choices=[('admin','Admin'),('chargeur','chargeur'),('transporteur','Transporteur')],default='chargeur')
     telephone = models.CharField(max_length=15,null=True,blank=True)
+    # Dans models.py de l'application Entreprise_App
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return self.username
+    @classmethod
+    def _generate_user_id(cls):
+        annee = timezone.now().strftime("%Y")
+        prefix = f"{annee}_user_"
+        dernier = cls.objects.filter(user_id__startswith=prefix).order_by('-user_id').first()
+        computer = (int(dernier.user_id[-2:]) + 1 if dernier else 0)
+        if computer > 99:
+            raise ValidationError('Limit exceeded')
+        return f'{prefix}{computer:02d}'
+    def save(self, *args, **kwargs):
+        if not self.user_id:
+            self.user_id = self._generate_user_id()
+
+        self.full_clean()  # Valider les champs avant de sauvegarder
+
+        super().save(*args, **kwargs)
+
+
 
 
 matricule_fiscale_validator = RegexValidator(
@@ -49,12 +73,7 @@ class Entreprise(models.Model):
     def __str__(self):
         return self.raison_sociale
 
-def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs):
+        self.full_clean()
 
-    if not self.user_id:
-        self.user_id= self._generate_user_id()
-
-    self.full_clean()
-
-    super().save(*args, **kwargs)
-
+        super().save(*args, **kwargs)
