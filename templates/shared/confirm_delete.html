@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">CONFIRMATION</p>
+        <h1>{{ title }}</h1>
+    </div>
+</div>
+<section class="form-card confirm-card">
+    <p>Voulez-vous vraiment supprimer <strong>{{ object }}</strong> ? Cette action est définitive.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button class="button button-danger" type="submit">Confirmer la suppression</button>
+            <a class="button button-secondary" href="{% url cancel_url %}">Annuler</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -59,4 +59,7 @@ class Exception(models.Model):
             self.reference = self._generate_reference()
         
         self.full_clean() 
-        super().save(*args, **kwargs) 
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.reference or f'{self.ville_depart} → {self.ville_arrivee}'

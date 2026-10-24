@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">GESTION</p>
+        <h1>{{ title }}</h1>
+        <p class="page-description">Renseignez les informations ci-dessous.</p>
+    </div>
+</div>
+<section class="form-card">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+        <div class="form-field">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}
+            {% for error in field.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+        </div>
+        {% endfor %}
+        <div class="form-actions">
+            <button class="button button-primary" type="submit">Enregistrer</button>
+            <a class="button button-secondary" href="{% url cancel_url %}">Annuler</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Vue d'ensemble{% endblock %}
+
+{% block content %}
+<div class="page-heading">
+    <div>
+        <p class="eyebrow">TABLEAU DE BORD</p>
+        <h1>Vue d'ensemble</h1>
+        <p class="page-description">Retrouvez les principales données de votre activité.</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <a class="stat-card" href="{% url 'vehicule_list' %}">
+        <span class="stat-icon icon-blue">V</span>
+        <span class="stat-label">Véhicules</span>
+        <strong>{{ vehicule_count }}</strong>
+        <span class="stat-link">Consulter les véhicules <span aria-hidden="true">→</span></span>
+    </a>
+    <a class="stat-card" href="{% url 'offre_list' %}">
+        <span class="stat-icon icon-violet">O</span>
+        <span class="stat-label">Offres</span>
+        <strong>{{ offre_count }}</strong>
+        <span class="stat-link">Consulter les offres <span aria-hidden="true">→</span></span>
+    </a>
+    <a class="stat-card" href="{% url 'entreprise_list' %}">
+        <span class="stat-icon icon-green">E</span>
+        <span class="stat-label">Entreprises</span>
+        <strong>{{ entreprise_count }}</strong>
+        <span class="stat-link">Consulter les entreprises <span aria-hidden="true">→</span></span>
+    </a>
+    <a class="stat-card" href="{% url 'expedition_list' %}">
+        <span class="stat-icon icon-orange">X</span>
+        <span class="stat-label">Expéditions</span>
+        <strong>{{ expedition_count }}</strong>
+        <span class="stat-link">Consulter les expéditions <span aria-hidden="true">→</span></span>
+    </a>
+</div>
+
+<section class="welcome-card">
+    <div>
+        <p class="eyebrow">BIENVENUE</p>
+        <h2>Gérez votre activité au même endroit.</h2>
+        <p>Créez et suivez les véhicules, offres, entreprises et expéditions depuis cette interface.</p>
+    </div>
+    <a class="button button-primary" href="{% url 'expedition_create' %}">Nouvelle expédition</a>
+</section>
+{% endblock %}

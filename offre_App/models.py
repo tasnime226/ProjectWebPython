@@ -109,3 +109,5 @@ class Offre(models.Model):
                 statut='proposee'
             ).exclude(pk=self.pk).update(statut='retiree')
 
+    def __str__(self):
+        return f'{self.expedition} — {self.transporteur} ({self.prix})'

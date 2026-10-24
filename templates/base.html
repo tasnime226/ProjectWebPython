@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Trasconnect{% endblock %} | Trasconnect</title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+    <aside class="sidebar">
+        <a class="brand" href="{% url 'dashboard' %}">
+            <span class="brand-mark">T</span>
+            <span>trasconnect<small>Gestion logistique</small></span>
+        </a>
+        <p class="nav-label">ESPACE DE TRAVAIL</p>
+        <nav class="navigation" aria-label="Navigation principale">
+            <a href="{% url 'dashboard' %}">Vue d'ensemble</a>
+            <a href="{% url 'vehicule_list' %}">Véhicules</a>
+            <a href="{% url 'offre_list' %}">Offres</a>
+            <a href="{% url 'entreprise_list' %}">Entreprises</a>
+            <a href="{% url 'expedition_list' %}">Expéditions</a>
+        </nav>
+        <a class="admin-link" href="{% url 'admin:index' %}">Administration Django</a>
+    </aside>
+    <main class="main-content">
+        <header class="topbar">
+            <span>Plateforme de transport</span>
+            <span class="topbar-status"><span></span> Espace de gestion</span>
+        </header>
+        <section class="page-content">
+            {% block content %}{% endblock %}
+        </section>
+        <footer class="footer">Trasconnect · Gestion des opérations de transport</footer>
+    </main>
+</body>
+</html>

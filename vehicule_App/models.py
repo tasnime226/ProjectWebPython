@@ -34,3 +34,6 @@ class Vehicule(models.Model):
     on_delete=models.CASCADE,
     related_name='vehicules'
 )
+
+    def __str__(self):
+        return self.immatriculation
