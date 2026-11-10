@@ -63,3 +63,4 @@ class Exception(models.Model):
 
     def __str__(self):
         return self.reference or f'{self.ville_depart} → {self.ville_arrivee}'
+    

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire expédition</title>
+</head>
+<body>
+
+    <h1>
+        {% if object %}
+            ✏️ Modifier l'expédition {{ object.reference }}
+        {% else %}
+            ➕ Nouvelle expédition
+        {% endif %}
+    </h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit"
+                style="padding: 8px 16px; background: #007bff; color: white;
+                       border: none; border-radius: 4px; cursor: pointer;">
+            Enregistrer l'expédition
+        </button>
+
+        <a href="{% url 'expedition:list' %}"
+           style="margin-left: 10px; text-decoration: none;">
+            Annuler
+        </a>
+    </form>
+
+</body>
+</html>

@@ -38,6 +38,7 @@ class utilisateur(AbstractUser):
         if computer > 99:
             raise ValidationError('Limit exceeded')
         return f'{prefix}{computer:02d}'
+    
     def save(self, *args, **kwargs):
         if not self.user_id:
             self.user_id = self._generate_user_id()

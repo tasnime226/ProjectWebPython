@@ -1,22 +1,25 @@
 from django.contrib import admin
 from .models import Exception
+from django.utils import timezone 
 
 
 class EnRetardAdmin(admin.SimpleListFilter):
-    titre = 'En retard'
+    title = 'En retard'
     parameter_name = "en_retard"
     def lookups(self, request, model_admin):
         return (
             ('oui', 'Oui'),
             ('non', 'Non'),
         )
-    def queryest(self,request,queryest):
+    def queryset(self, request, queryset):
         aujourd_hui = timezone.now().date()
         if self.value() == 'oui':
-            return queryest.filter(statut="publiee",date_souhaitee__lt=aujourd_hui)
+            
+            return queryset.filter(statut="publiee", date_souhaitee__lt=aujourd_hui)
         if self.value() == 'non':
-            return queryest.exclude(statut="publiee",date_souhaitee__lt=aujourd_hui)
-        return queryest
+            
+            return queryset.exclude(statut="publiee", date_souhaitee__lt=aujourd_hui)
+        return queryset
     
 @admin.action(description="Passer à : Publiée")
 def marquer_publiee(modeladmin, request, queryset):
@@ -52,7 +55,7 @@ class ExceptionAdmin(admin.ModelAdmin):
         marquer_annulee,
     ]
     list_display = ('reference', 'date_souhaitee', 'statut')
-    list_filter = ('created_at', 'entreprise')
+    list_filter = ('created_at', 'entreprise',EnRetardAdmin)
     ordering = ('-date_souhaitee',)
     list_per_page = 5
     readonly_fields = ('reference', 'created_at', 'updated_at')
