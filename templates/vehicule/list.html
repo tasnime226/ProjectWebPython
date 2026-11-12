@@ -1,0 +1,42 @@
+<h1>Liste des véhicules</h1>
+
+<a href="{% url 'vehicule:vehicule_create_class' %}">
+    Ajouter un véhicule
+</a>
+
+<table border="1">
+    <tr>
+        <th>Immatriculation</th>
+        <th>Type</th>
+        <th>Capacité (kg)</th>
+        <th>Disponible</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for veh in liste %}
+    <tr>
+        <td>{{ veh.immatriculation }}</td>
+        <td>{{ veh.type_vehicule }}</td>
+        <td>{{ veh.capacite_kg }}</td>
+        <td>{{ veh.disponible }}</td>
+
+        <td>
+            <a href="{% url 'vehicule:vehicule_details_class' veh.pk %}">
+                Voir détails
+            </a>
+
+            <a href="{% url 'vehicule:vehicule_update_class' veh.pk %}">
+                Modifier
+            </a>
+
+            <a href="{% url 'vehicule:vehicule_delete_class' veh.pk %}">
+                Supprimer
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">Aucun véhicule disponible.</td>
+    </tr>
+    {% endfor %}
+</table>

@@ -1,85 +1,75 @@
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 
 from .models import Vehicule
+from .forms import VehiculeForm
+
+from django.views.generic import ListView, DetailView
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 
-class VehiculeListView(ListView):
+# 1. LIST : afficher tous les véhicules
+
+def listVehicules(request):
+    liste = Vehicule.objects.all()
+    return render(request, 'vehicule/list.html', {'liste': liste})
+
+
+# 2. DETAILS : afficher un véhicule
+
+def detailsVehicule(request, pk):
+    vehicule = get_object_or_404(Vehicule, pk=pk)
+    return render(request, 'vehicule/details.html', {'veh': vehicule})
+
+
+# 3. DELETE : supprimer un véhicule
+
+@require_POST
+def supprimerVehicule(request, pk):
+    vehicule = get_object_or_404(Vehicule, pk=pk)
+    vehicule.delete()
+    return redirect('vehicule:list')
+
+
+# 4. LIST avec ListView
+
+class Vehicule_list(ListView):
     model = Vehicule
-    template_name = 'shared/list.html'
-    context_object_name = 'objects'
-    ordering = ('immatriculation',)
-    title = 'Véhicules'
-    columns = (
-        ('immatriculation', 'Immatriculation'),
-        ('type_vehicule', 'Type'),
-        ('capacite_kg', 'Capacité (kg)'),
-        ('disponible', 'Disponible'),
-        ('proprietaire', 'Propriétaire'),
-    )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = self.title
-        context['columns'] = [label for _, label in self.columns]
-        context['rows'] = [
-            {
-                'object': item,
-                'values': [
-                    self._display_value(item, field)
-                    for field, _ in self.columns
-                ],
-            }
-            for item in context['objects']
-        ]
-        context['create_url'] = 'vehicule_create'
-        context['update_url'] = 'vehicule_update'
-        context['delete_url'] = 'vehicule_delete'
-        return context
-
-    @staticmethod
-    def _display_value(item, field):
-        display_method = getattr(item, f'get_{field}_display', None)
-        value = (
-            display_method()
-            if callable(display_method)
-            else getattr(item, field)
-        )
-        if isinstance(value, bool):
-            return 'Oui' if value else 'Non'
-        return str(value) if value not in (None, '') else '—'
+    template_name = 'vehicule/list.html'
+    context_object_name = 'liste'
 
 
-class VehiculeCreateView(CreateView):
+# 5. DETAILS avec DetailView
+
+class Vehicule_details(DetailView):
     model = Vehicule
-    fields = (
-        'immatriculation',
-        'type_vehicule',
-        'capacite_kg',
-        'disponible',
-        'proprietaire',
-    )
-    template_name = 'shared/form.html'
-    success_url = reverse_lazy('vehicule_list')
-    extra_context = {'title': 'Ajouter un véhicule', 'cancel_url': 'vehicule_list'}
+    template_name = 'vehicule/details.html'
+    context_object_name = 'veh'
 
 
-class VehiculeUpdateView(UpdateView):
+# 6. DELETE avec DeleteView
+
+class Vehicule_delete(DeleteView):
     model = Vehicule
-    fields = (
-        'immatriculation',
-        'type_vehicule',
-        'capacite_kg',
-        'disponible',
-        'proprietaire',
-    )
-    template_name = 'shared/form.html'
-    success_url = reverse_lazy('vehicule_list')
-    extra_context = {'title': 'Modifier un véhicule', 'cancel_url': 'vehicule_list'}
+    template_name = 'vehicule/confirm_delete.html'
+    success_url = reverse_lazy('vehicule:list')
 
 
-class VehiculeDeleteView(DeleteView):
+# 7. CREATE avec CreateView
+
+class Vehicule_create(CreateView):
     model = Vehicule
-    template_name = 'shared/confirm_delete.html'
-    success_url = reverse_lazy('vehicule_list')
-    extra_context = {'title': 'Supprimer un véhicule', 'cancel_url': 'vehicule_list'}
+    template_name = 'vehicule/form.html'
+    form_class = VehiculeForm
+    success_url = reverse_lazy('vehicule:list')
+
+
+# 8. UPDATE avec UpdateView
+
+class Vehicule_update(UpdateView):
+    model = Vehicule
+    template_name = 'vehicule/form.html'
+    form_class = VehiculeForm
+    success_url = reverse_lazy('vehicule:list')

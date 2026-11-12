@@ -1,85 +1,74 @@
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, ListView, UpdateView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 from .models import Offre
+from .forms import OffreForm
+
+from django.views.generic import ListView, DetailView
+from django.views.generic import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 
-class OffreListView(ListView):
+# 1. LIST : afficher toutes les offres
+
+def listOffres(request):
+    liste = Offre.objects.all()
+    return render(request, 'offre/list.html', {'liste': liste})
+
+
+# 2. DETAILS : afficher une offre
+
+def detailsOffre(request, pk):
+    offre = get_object_or_404(Offre, pk=pk)
+    return render(request, 'offre/details.html', {'off': offre})
+
+
+# 3. DELETE : supprimer une offre
+
+@require_POST
+def supprimerOffre(request, pk):
+    offre = get_object_or_404(Offre, pk=pk)
+    offre.delete()
+    return redirect('offre:list')
+
+
+# 4. LIST avec ListView
+
+class Offre_list(ListView):
     model = Offre
-    template_name = 'shared/list.html'
-    context_object_name = 'objects'
-    ordering = ('-date_proposition',)
-    columns = (
-        ('expedition', 'Expédition'),
-        ('transporteur', 'Transporteur'),
-        ('vehicule', 'Véhicule'),
-        ('prix', 'Prix'),
-        ('delai_jours', 'Délai (jours)'),
-        ('statut', 'Statut'),
-    )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = 'Offres'
-        context['columns'] = [label for _, label in self.columns]
-        context['rows'] = [
-            {
-                'object': item,
-                'values': [
-                    self._display_value(item, field)
-                    for field, _ in self.columns
-                ],
-            }
-            for item in context['objects']
-        ]
-        context['create_url'] = 'offre_create'
-        context['update_url'] = 'offre_update'
-        context['delete_url'] = 'offre_delete'
-        return context
-
-    @staticmethod
-    def _display_value(item, field):
-        display_method = getattr(item, f'get_{field}_display', None)
-        value = (
-            display_method()
-            if callable(display_method)
-            else getattr(item, field)
-        )
-        return str(value) if value not in (None, '') else '—'
+    template_name = 'offre/list.html'
+    context_object_name = 'liste'
 
 
-class OffreCreateView(CreateView):
+# 5. DETAILS avec DetailView
+
+class Offre_details(DetailView):
     model = Offre
-    fields = (
-        'prix',
-        'delai_jours',
-        'statut',
-        'expedition',
-        'transporteur',
-        'vehicule',
-    )
-    template_name = 'shared/form.html'
-    success_url = reverse_lazy('offre_list')
-    extra_context = {'title': 'Ajouter une offre', 'cancel_url': 'offre_list'}
+    template_name = 'offre/details.html'
+    context_object_name = 'off'
 
 
-class OffreUpdateView(UpdateView):
+# 6. DELETE avec DeleteView
+
+class Offre_delete(DeleteView):
     model = Offre
-    fields = (
-        'prix',
-        'delai_jours',
-        'statut',
-        'expedition',
-        'transporteur',
-        'vehicule',
-    )
-    template_name = 'shared/form.html'
-    success_url = reverse_lazy('offre_list')
-    extra_context = {'title': 'Modifier une offre', 'cancel_url': 'offre_list'}
+    template_name = 'offre/confirm_delete.html'
+    success_url = reverse_lazy('offre:list')
 
 
-class OffreDeleteView(DeleteView):
+# 7. CREATE avec CreateView
+
+class Offre_create(CreateView):
     model = Offre
-    template_name = 'shared/confirm_delete.html'
-    success_url = reverse_lazy('offre_list')
-    extra_context = {'title': 'Supprimer une offre', 'cancel_url': 'offre_list'}
+    template_name = 'offre/form.html'
+    form_class = OffreForm
+    success_url = reverse_lazy('offre:list')
+
+
+# 8. UPDATE avec UpdateView
+
+class Offre_update(UpdateView):
+    model = Offre
+    template_name = 'offre/form.html'
+    form_class = OffreForm
+    success_url = reverse_lazy('offre:list')

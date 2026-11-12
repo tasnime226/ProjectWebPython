@@ -1,0 +1,37 @@
+
+/* Barre supérieure */
+#header {
+    background-color: #198754 !important;
+}
+
+/* Titres des applications */
+.module h2,
+.module caption {
+    background-color: #198754 !important;
+}
+
+/* Liens */
+a:link,
+a:visited {
+    color: #198754;
+}
+
+/* Boutons */
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input {
+    background-color: #198754 !important;
+    color: white !important;
+}
+
+/* Boutons au survol */
+.button:hover,
+input[type="submit"]:hover {
+    background-color: #146c43 !important;
+}
+
+/* Liens Ajouter */
+.addlink {
+    color: #198754 !important;
+}

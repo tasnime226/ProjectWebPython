@@ -1,0 +1,11 @@
+<h1>Détails du véhicule</h1>
+
+<p>Immatriculation : {{ veh.immatriculation }}</p>
+<p>Type : {{ veh.type_vehicule }}</p>
+<p>Capacité : {{ veh.capacite_kg }} kg</p>
+<p>Disponible : {{ veh.disponible }}</p>
+<p>Propriétaire : {{ veh.proprietaire }}</p>
+
+<a href="{% url 'vehicule:list' %}">
+    Retour à la liste
+</a>

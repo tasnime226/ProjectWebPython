@@ -1,0 +1,18 @@
+<h1>Confirmation de suppression</h1>
+
+<p>
+    Voulez-vous vraiment supprimer le véhicule
+    {{ object.immatriculation }} ?
+</p>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <button type="submit" style="color: red;">
+        Confirmer la suppression
+    </button>
+
+    <a href="{% url 'vehicule:list' %}">
+        Annuler
+    </a>
+</form>

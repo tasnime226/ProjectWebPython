@@ -1,0 +1,47 @@
+<h1>Liste des offres</h1>
+
+<a href="{% url 'offre:offre_create_class' %}">
+    Ajouter une offre
+</a>
+
+<table border="1">
+    <tr>
+        <th>Prix</th>
+        <th>Délai (jours)</th>
+        <th>Statut</th>
+        <th>Expédition</th>
+        <th>Transporteur</th>
+        <th>Véhicule</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for off in liste %}
+    <tr>
+        <td>{{ off.prix }}</td>
+        <td>{{ off.delai_jours }}</td>
+        <td>{{ off.statut }}</td>
+        <td>{{ off.expedition }}</td>
+        <td>{{ off.transporteur }}</td>
+        <td>{{ off.vehicule }}</td>
+
+        <td>
+            <a href="{% url 'offre:offre_details_class' off.pk %}">
+                Voir détails
+            </a>
+
+            <a href="{% url 'offre:offre_update_class' off.pk %}">
+                Modifier
+            </a>
+
+            <a href="{% url 'offre:offre_delete_class' off.pk %}">
+                Supprimer
+            </a>
+        </td>
+    </tr>
+
+    {% empty %}
+    <tr>
+        <td colspan="7">Aucune offre disponible.</td>
+    </tr>
+    {% endfor %}
+</table>

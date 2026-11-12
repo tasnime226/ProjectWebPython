@@ -1,0 +1,13 @@
+<h1>Détails de l'offre</h1>
+
+<p>Prix : {{ off.prix }}</p>
+<p>Délai : {{ off.delai_jours }} jours</p>
+<p>Statut : {{ off.statut }}</p>
+<p>Expédition : {{ off.expedition }}</p>
+<p>Transporteur : {{ off.transporteur }}</p>
+<p>Véhicule : {{ off.vehicule }}</p>
+<p>Date de proposition : {{ off.date_proposition }}</p>
+
+<a href="{% url 'offre:offre_list' %}">
+    Retour à la liste
+</a>
