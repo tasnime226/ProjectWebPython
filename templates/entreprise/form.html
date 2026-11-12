@@ -1,0 +1,14 @@
+
+<h1>Créer ou modifier une entreprise</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Enregistrer</button>
+
+    <a href="{% url 'entreprise:entreprise_list' %}">
+        Annuler
+    </a>
+</form>

@@ -1,0 +1,14 @@
+
+<h1>Détails de l'entreprise</h1>
+
+<p>Raison sociale : {{ ent.raison_sociale }}</p>
+<p>Matricule fiscale : {{ ent.matricule_fiscale }}</p>
+<p>Type : {{ ent.get_Type_entrprise_display }}</p>
+<p>Adresse : {{ ent.adresse }}</p>
+<p>Gérant : {{ ent.gerant }}</p>
+<p>Date de création : {{ ent.created_at }}</p>
+<p>Dernière modification : {{ ent.updated_at }}</p>
+
+<a href="{% url 'entreprise:entreprise_list' %}">
+    Retour à la liste
+</a>

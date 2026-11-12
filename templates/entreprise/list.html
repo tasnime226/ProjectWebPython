@@ -1,0 +1,46 @@
+
+<h1>Liste des entreprises</h1>
+
+<a href="{% url 'entreprise:entreprise_create_class' %}">
+    Ajouter une entreprise
+</a>
+
+<table border="1">
+    <tr>
+        <th>Raison sociale</th>
+        <th>Matricule fiscale</th>
+        <th>Type</th>
+        <th>Adresse</th>
+        <th>Gérant</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for ent in liste %}
+    <tr>
+        <td>{{ ent.raison_sociale }}</td>
+        <td>{{ ent.matricule_fiscale }}</td>
+        <td>{{ ent.get_Type_entrprise_display }}</td>
+        <td>{{ ent.adresse }}</td>
+        <td>{{ ent.gerant }}</td>
+
+        <td>
+            <a href="{% url 'entreprise:entreprise_details_class' ent.pk %}">
+                Voir détails
+            </a>
+
+            <a href="{% url 'entreprise:entreprise_update_class' ent.pk %}">
+                Modifier
+            </a>
+
+            <a href="{% url 'entreprise:entreprise_delete_class' ent.pk %}">
+                Supprimer
+            </a>
+        </td>
+    </tr>
+
+    {% empty %}
+    <tr>
+        <td colspan="6">Aucune entreprise disponible.</td>
+    </tr>
+    {% endfor %}
+</table>

@@ -25,5 +25,6 @@ urlpatterns = [
     path('expeditions/', include('Exception_App.urls')),
      path('vehicules/', include('vehicule_App.urls')),
       path('offres/', include('offre_App.urls')),
+      path('entreprises/', include('Entreprise_App.urls')),
    
 ]
