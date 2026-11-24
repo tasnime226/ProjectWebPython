@@ -1,0 +1,10 @@
+{% if user.is_authenticated %}
+<form action="{% url 'Logout' %}" class ="btn-pill btn-glass" method="post">
+
+    {% crsf_tocken %}
+    <button type ="submit">
+        <svg width="16" height="16" file="none" stroke=""current 
+    </button>
+</form>
+<a href="{% url 'Logout' %}" class=""btn-pill btn-glass">
+</a>

@@ -7,6 +7,45 @@
 </head>
 <body>
 
+<nav class="custom-navbar">
+
+    <div class="nav-links">
+
+        {% if user.is_authenticated %}
+
+            <span class="nav-user">
+                Bonjour, {{ user.username }}
+            </span>
+
+            <form method="post"
+                  action="{% url 'Logout' %}"
+                  style="margin:0; display:inline;">
+
+                {% csrf_token %}
+
+                <button type="submit" class="nav-btn">
+                    Logout
+                </button>
+
+            </form>
+
+        {% else %}
+
+            <a href="{% url 'Login' %}" class="nav-btn">
+                Login
+            </a>
+
+            <a href="{% url 'inscription' %}" class="nav-btn">
+                Inscription
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+
     <h1 style="color: blue;">Expeditions List</h1>
 
     <!-- Bouton "Créer" -->

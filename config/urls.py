@@ -16,6 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.urls import path, include
+from django.contrib.auth.views import LoginView, LogoutView
+from Entreprise_App.views import inscriptionView
+
 
 
 
@@ -26,5 +30,19 @@ urlpatterns = [
      path('vehicules/', include('vehicule_App.urls')),
       path('offres/', include('offre_App.urls')),
       path('entreprises/', include('Entreprise_App.urls')),
+      path(
+        'Login/',
+        LoginView.as_view(template_name='login.html'),
+        name='Login'
+    ),
+
+    path(
+        'Logout/',
+        LogoutView.as_view(next_page='Login'),
+        name='Logout'
+    ),
+
+    path('inscription/', inscriptionView, name='Inscription'),
+
    
 ]

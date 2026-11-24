@@ -35,4 +35,5 @@ urlpatterns = [
         Entreprise_delete.as_view(),
         name='entreprise_delete_class'
     ),
+    
 ]
