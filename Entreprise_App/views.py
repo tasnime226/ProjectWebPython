@@ -7,6 +7,11 @@ from django.urls import reverse_lazy
 from .models import Entreprise
 from .forms import EntrepriseForm,InscriptionForm
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .forms import ProfilForm
+
 
 class Entreprise_list(ListView):
     model = Entreprise
@@ -49,3 +54,26 @@ def inscriptionView(request):
     else:
         form = InscriptionForm()
     return render(request, 'inscription.html', {'form': form})
+
+
+
+class ProfilView(LoginRequiredMixin, TemplateView):
+    template_name = 'profil/profil.html'
+    login_url = 'Login'
+
+
+class ProfilUpdate(LoginRequiredMixin, UpdateView):
+    form_class = ProfilForm
+    template_name = 'profil/profil_form.html'
+    success_url = reverse_lazy('entreprise:profil')
+
+    def get_object(self):
+        return self.request.user
+
+
+class ProfilDelete(LoginRequiredMixin, DeleteView):
+    template_name = 'profil/profil_confirm_delete.html'
+    success_url = reverse_lazy('Login')
+
+    def get_object(self):
+        return self.request.user

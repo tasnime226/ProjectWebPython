@@ -1,0 +1,12 @@
+<h2>Supprimer mon compte</h2>
+
+<p>Voulez-vous vraiment supprimer votre compte ?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirmer la suppression</button>
+</form>
+
+<a href="{% url 'entreprise:profil' %}">
+    Annuler
+</a>

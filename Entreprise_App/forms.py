@@ -2,6 +2,7 @@
 from django import forms
 from .models import Entreprise,utilisateur
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
 
 
 
@@ -26,3 +27,11 @@ class InscriptionForm(UserCreationForm):
         model = utilisateur
         #fields =('username', 'email', 'telephone','role')
         fields =UserCreationForm.Meta.fields + ('email', 'telephone','role')  # Ajoutez les champs supplémentaires ici
+
+Utilisateur = get_user_model()
+
+
+class ProfilForm(forms.ModelForm):
+    class Meta:
+        model = Utilisateur
+        fields = ['username', 'email', 'telephone']

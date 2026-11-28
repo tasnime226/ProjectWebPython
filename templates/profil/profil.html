@@ -1,0 +1,14 @@
+<h2>Mon profil</h2>
+
+<p>Nom : {{ user.username }}</p>
+<p>Email : {{ user.email }}</p>
+<p>Téléphone : {{ user.telephone }}</p>
+<p>Rôle : {{ user.role }}</p>
+
+<a href="{% url 'entreprise:profil_modifier' %}">
+    Modifier mon profil
+</a>
+
+<a href="{% url 'entreprise:profil_supprimer' %}">
+    Supprimer mon compte
+</a>

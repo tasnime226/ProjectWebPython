@@ -1,6 +1,7 @@
 
 from django.urls import path
 from .views import *
+from .views import ProfilView, ProfilUpdate, ProfilDelete
 
 app_name = "entreprise"
 
@@ -35,5 +36,8 @@ urlpatterns = [
         Entreprise_delete.as_view(),
         name='entreprise_delete_class'
     ),
+    path('profil/', ProfilView.as_view(), name='profil'),
+    path('profil/modifier/', ProfilUpdate.as_view(), name='profil_modifier'),
+    path('profil/supprimer/', ProfilDelete.as_view(), name='profil_supprimer'),
     
 ]
